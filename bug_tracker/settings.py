@@ -122,4 +122,4 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
 
-AUTH_USER_MODEL = 'bug_tracker.MyUser'
+AUTH_USER_MODEL = 'homepage.MyUser'
