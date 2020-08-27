@@ -5,6 +5,7 @@ from django.utils import timezone
 
 class MyUser(AbstractUser):
     display_name = models.CharField(max_length=240)
+    REQUIRED_FIELDS = ['display_name']
 
 
 class Ticket(models.Model):
