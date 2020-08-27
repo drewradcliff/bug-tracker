@@ -12,7 +12,25 @@ class Ticket(models.Model):
     title = models.CharField(max_length=240)
     date = models.DateTimeField(default=timezone.now)
     description = models.TextField()
-    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    user_filed = models.ForeignKey(
+        MyUser,
+        related_name='filed',
+        on_delete=models.CASCADE,
+    )
+    user_assigned = models.ForeignKey(
+        MyUser,
+        related_name='assigned',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    user_completed = models.ForeignKey(
+        MyUser,
+        related_name='completed',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     NEW = 'NE'
     IN_PROGRESS = 'IP'
     DONE = 'DO'
@@ -28,15 +46,3 @@ class Ticket(models.Model):
         choices=STATUS_CHOICES,
         default=NEW,
     )
-    # assigned_user = models.ForeignKey(
-    #     MyUser,
-    #     on_delete=models.CASCADE,
-    #     blank=True,
-    #     null=True,
-    # )
-    # completed_user = models.ForeignKey(
-    #     MyUser,
-    #     on_delete=models.CASCADE,
-    #     blank=True,
-    #     null=True,
-    # )

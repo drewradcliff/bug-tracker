@@ -1,6 +1,6 @@
 from django import forms
 
-from homepage.models import MyUser
+from homepage.models import MyUser, Ticket
 
 
 class LoginForm(forms.Form):
@@ -14,3 +14,12 @@ class SignupForm(forms.ModelForm):
     class Meta:
         model = MyUser
         fields = ["username", "display_name"]
+
+
+class AddTicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ["title", "description", "user_assigned", "status"]
+    # title = forms.CharField(max_length=240)
+    # description = forms.Textarea()
+    # user_assigned =

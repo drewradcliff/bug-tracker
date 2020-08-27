@@ -1,11 +1,14 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
-from homepage.forms import LoginForm, SignupForm
-from homepage.models import MyUser
+from homepage.forms import LoginForm, SignupForm, AddTicketForm
+from homepage.models import MyUser, Ticket
 
 
+@login_required
 def index(request):
+
     return render(request, "index.html")
 
 
@@ -44,3 +47,20 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("login"))
+
+
+@login_required
+def add_ticket(request):
+    if request.method == "POST":
+        form = AddTicketForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user_filed = request.user
+            if obj.status == 'DO':
+                obj.user_completed = request.user
+                obj.save()
+            obj.save()
+        return HttpResponseRedirect(reverse("homepage"))
+
+    form = AddTicketForm()
+    return render(request, "generic_form.html", {"form": form})
