@@ -24,7 +24,11 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
     path('logout/', views.logout_view, name="logout"),
     path('addticket/', views.add_ticket, name="addticket"),
-    path('ticket/<int:ticket_id>/', views.ticket),
+    path('ticket/<int:ticket_id>/edit/', views.ticket_edit_view),
+    path('ticket/<int:ticket_id>/assign/', views.assign_ticket),
+    path('ticket/<int:ticket_id>/done/', views.set_status_done),
+    path('ticket/<int:ticket_id>/invalid/', views.set_status_invalid),
+    path('ticket/<int:ticket_id>/', views.ticket, name="ticket"),
     path('user/<int:user_id>/', views.user),
     path('admin/', admin.site.urls),
 ]

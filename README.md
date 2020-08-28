@@ -1,6 +1,6 @@
 # Bug Tracker
 
-Jira clone using Django
+Bug tracking system built in Django
 
 ## Installation
 

@@ -19,7 +19,4 @@ class SignupForm(forms.ModelForm):
 class AddTicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ["title", "description", "user_assigned", "status"]
-    # title = forms.CharField(max_length=240)
-    # description = forms.Textarea()
-    # user_assigned =
+        fields = ["title", "description"]

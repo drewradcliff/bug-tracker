@@ -46,3 +46,6 @@ class Ticket(models.Model):
         choices=STATUS_CHOICES,
         default=NEW,
     )
+
+    def status_verbose(self):
+        return dict(Ticket.STATUS_CHOICES)[self.status]

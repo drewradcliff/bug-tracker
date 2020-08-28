@@ -65,9 +65,9 @@ def add_ticket(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user_filed = request.user
-            if obj.status == 'DO':
-                obj.user_completed = request.user
-                obj.save()
+            # if obj.status == 'DO':
+            #     obj.user_completed = request.user
+            #     obj.save()
             obj.save()
         return HttpResponseRedirect(reverse("homepage"))
 
@@ -81,7 +81,7 @@ def ticket(request, ticket_id):
     return render(request, "ticket.html", {"ticket": ticket})
 
 
-@login_required
+@ login_required
 def user(request, user_id):
     tickets_assigned = Ticket.objects.filter(user_assigned=user_id)
     tickets_filed = Ticket.objects.filter(user_filed=user_id)
@@ -92,3 +92,39 @@ def user(request, user_id):
         "tickets_filed": tickets_filed,
         "tickets_completed": tickets_completed,
     })
+
+
+def ticket_edit_view(request, ticket_id):
+    ticket = Ticket.objects.get(id=ticket_id)
+
+    if request.method == "POST":
+        form = AddTicketForm(request.POST, instance=ticket)
+        form.save()
+        return HttpResponseRedirect(reverse("ticket", args=[ticket.id]))
+
+    form = AddTicketForm(instance=ticket)
+    return render(request, "generic_form.html", {"form": form})
+
+
+def assign_ticket(request, ticket_id):
+    ticket = Ticket.objects.filter(id=ticket_id).update(
+        user_assigned=request.user, status="IP")
+    return HttpResponseRedirect(reverse("ticket", args=[ticket_id]))
+
+
+def set_status_done(request, ticket_id):
+    ticket = Ticket.objects.filter(id=ticket_id).update(
+        user_assigned=None,
+        user_completed=request.user,
+        status="DO"
+    )
+    return HttpResponseRedirect(reverse("ticket", args=[ticket_id]))
+
+
+def set_status_invalid(request, ticket_id):
+    ticket = Ticket.objects.filter(id=ticket_id).update(
+        user_assigned=None,
+        user_completed=None,
+        status="IN"
+    )
+    return HttpResponseRedirect(reverse("ticket", args=[ticket_id]))
