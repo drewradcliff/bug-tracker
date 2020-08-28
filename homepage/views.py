@@ -8,8 +8,17 @@ from homepage.models import MyUser, Ticket
 
 @login_required
 def index(request):
-
-    return render(request, "index.html")
+    new_tickets = Ticket.objects.filter(status="NE")
+    in_progress_tickets = Ticket.objects.filter(status="IP")
+    done_tickets = Ticket.objects.filter(status="DO")
+    invalid_tickets = Ticket.objects.filter(status="IN")
+    return render(request, "index.html", {
+        "new_tickets": new_tickets,
+        "in_progress_tickets": in_progress_tickets,
+        "done_tickets": done_tickets,
+        "invalid_tickets": invalid_tickets,
+        "tickets": [new_tickets, in_progress_tickets, done_tickets, invalid_tickets],
+    })
 
 
 def login_view(request):
@@ -64,3 +73,22 @@ def add_ticket(request):
 
     form = AddTicketForm()
     return render(request, "generic_form.html", {"form": form})
+
+
+@login_required
+def ticket(request, ticket_id):
+    ticket = Ticket.objects.filter(id=ticket_id).first()
+    return render(request, "ticket.html", {"ticket": ticket})
+
+
+@login_required
+def user(request, user_id):
+    tickets_assigned = Ticket.objects.filter(user_assigned=user_id)
+    tickets_filed = Ticket.objects.filter(user_filed=user_id)
+    tickets_completed = Ticket.objects.filter(user_completed=user_id)
+    return render(request, "user.html", {
+        "user_id": user_id,
+        "tickets_assigned": tickets_assigned,
+        "tickets_filed": tickets_filed,
+        "tickets_completed": tickets_completed,
+    })
