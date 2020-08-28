@@ -65,9 +65,6 @@ def add_ticket(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user_filed = request.user
-            # if obj.status == 'DO':
-            #     obj.user_completed = request.user
-            #     obj.save()
             obj.save()
         return HttpResponseRedirect(reverse("homepage"))
 
